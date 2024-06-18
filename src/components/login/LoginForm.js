@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { signInWithEmailAndPassword } from '../../services/Auth';
 import { useNavigate } from 'react-router-dom';
+import PasswordRecoveryLink from "./PasswordRecoveryLink";
 
 const CustomContainer = styled(Container)(({ theme }) => ({
     marginTop: theme.spacing(8),
@@ -115,18 +116,11 @@ const LoginForm = () => {
                 >
                     Sign In
                 </CustomButton>
-                <Grid container>
-                    <Grid item xs>
-                        <Link href="#" variant="body2">
-                            Forgot password?
-                        </Link>
-                    </Grid>
-                    <Grid item>
-                        <Link href="/signup" variant="body2">
-                            {"Don't have an account? Sign Up"}
-                        </Link>
-                    </Grid>
-                </Grid>
+                <div style={{textAlign: 'center', marginTop: '10px'}}>
+                    <Link href="/sign-up" variant="body2">
+                        {"Don't have an account? Sign Up"}
+                    </Link>
+                </div>
             </CustomForm>
         </CustomContainer>
     );

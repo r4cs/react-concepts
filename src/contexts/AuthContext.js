@@ -6,6 +6,7 @@ import {
     onAuthStateChanged,
     updateEmail,
     updateProfile,
+    sendPasswordResetEmail as firebaseSendPasswordResetEmail,
     deleteUser as firebaseDeleteUser
 } from 'firebase/auth';
 import { auth } from '../services/Firebase';
@@ -72,6 +73,15 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const sendPasswordResetEmail = async (email) => {
+        try {
+            await firebaseSendPasswordResetEmail(auth, email);
+        } catch (error) {
+            console.error('Password reset email error:', error);
+            throw error;
+        }
+    };
+
     const deleteUserAccount = async () => {
         try {
             if (currentUser) {
@@ -94,6 +104,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         updateUser,
+        sendPasswordResetEmail,
         deleteUserAccount
     };
 
