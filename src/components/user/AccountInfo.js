@@ -1,28 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Button, Paper } from '@mui/material';
+import { Typography, Button, Paper, TextField } from '@mui/material';
 import styled from 'styled-components';
 import { useAuth } from '../../contexts/AuthContext';
-import {deleteUserAccount} from "../../services/Auth";
+import {deleteUserAccount, updateUserData} from "../../services/Auth";
+// import { useNavigate } from 'react-router-dom';
 
 const ContentContainer = styled.div`
     padding: 20px;
 `;
 
 const AccountInfo = () => {
-    const { currentUser, logout } = useAuth();
+    const { currentUser } = useAuth();
     const [user, setUser] = useState(null);
+    const [email, setEmail] = useState('');
+    const [displayName, setDisplayName] = useState('');
+    // const navigate = useNavigate();
 
     useEffect(() => {
-        setUser(currentUser);
-        console.log('AccountInfo useEffect, currentUser:', currentUser);
+        if (currentUser) {
+            setUser(currentUser);
+            setEmail(currentUser.email);
+            setDisplayName(currentUser.displayName);
+            console.log("AccountInfo useEffect, currentUser: ", currentUser)
+        }
     }, [currentUser]);
+
+    const handleUpdate = async () => {
+        try {
+            await updateUserData( { email, displayName } );
+            console.log('User updated successfully');
+        } catch (error) {
+            console.error('Error updating user:', error.message);
+        }
+    };
 
     const handleDelete = async () => {
         try {
             await deleteUserAccount();
-            console.log('Usuário deletado!');
+            console.log('User deleted successfully');
+            // navigate('/');
         } catch (error) {
-            console.error('Erro ao fazer logout:', error.message);
+            console.error('Error deleting user:', error.message);
         }
     };
 
@@ -31,25 +49,33 @@ const AccountInfo = () => {
             <Typography variant="h5" gutterBottom>
                 My Account Info
             </Typography>
-            <Paper elevation={3} style={{padding: '20px', marginBottom: '20px'}}>
+            <Paper elevation={3} style={{ padding: '20px', marginBottom: '20px' }}>
                 {user ? (
                     <>
-                        <Typography variant="body1" gutterBottom>
-                            <strong>Email:</strong> {user.email}
-                        </Typography>
-                        <Typography variant="body1" gutterBottom>
-                            <strong>Username:</strong> {user.displayName}
-                        </Typography>
-                        <Button variant="contained" color="primary">
+                        <TextField
+                            label="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            fullWidth
+                            margin="normal"
+                        />
+                        <TextField
+                            label="Username"
+                            value={displayName}
+                            onChange={(e) => setDisplayName(e.target.value)}
+                            fullWidth
+                            margin="normal"
+                        />
+                        <Button variant="contained" color="primary" onClick={handleUpdate}>
                             Update Account Info
                         </Button>
                         <Button
                             variant="contained"
                             color="secondary"
                             onClick={handleDelete}
-                            style={{marginLeft: '10px'}}
+                            style={{ marginLeft: '10px' }}
                         >
-                            Delete account
+                            Delete Account
                         </Button>
                     </>
                 ) : (
@@ -65,33 +91,29 @@ const AccountInfo = () => {
 export default AccountInfo;
 
 
-
-
-// // components/user/AccountInfo.js
-//
 // import React, { useEffect, useState } from 'react';
 // import { Typography, Button, Paper } from '@mui/material';
 // import styled from 'styled-components';
 // import { useAuth } from '../../contexts/AuthContext';
+// import {deleteUserAccount} from "../../services/Auth";
 //
 // const ContentContainer = styled.div`
 //     padding: 20px;
 // `;
 //
 // const AccountInfo = () => {
-//     const {getCurrentUser, logout} = useAuth();
-//     const [currentUser, setCurrentUser] = useState(null);
+//     const { currentUser, logout } = useAuth();
+//     const [user, setUser] = useState(null);
 //
 //     useEffect(() => {
-//         const user = getCurrentUser();
-//         setCurrentUser(user);
-//         console.log('AccountInfo useEffect, currentUser:', user);
-//     }, []);
+//         setUser(currentUser);
+//         console.log('AccountInfo useEffect, currentUser:', currentUser);
+//     }, [currentUser]);
 //
-//     const handleLogout = async () => {
+//     const handleDelete = async () => {
 //         try {
-//             await logout();
-//             console.log('Logout bem-sucedido!');
+//             await deleteUserAccount();
+//             console.log('Usuário deletado!');
 //         } catch (error) {
 //             console.error('Erro ao fazer logout:', error.message);
 //         }
@@ -103,13 +125,13 @@ export default AccountInfo;
 //                 My Account Info
 //             </Typography>
 //             <Paper elevation={3} style={{padding: '20px', marginBottom: '20px'}}>
-//                 {currentUser ? (
+//                 {user ? (
 //                     <>
 //                         <Typography variant="body1" gutterBottom>
-//                             <strong>Email:</strong> {currentUser.email}
+//                             <strong>Email:</strong> {user.email}
 //                         </Typography>
 //                         <Typography variant="body1" gutterBottom>
-//                             <strong>Username:</strong> {currentUser.username}
+//                             <strong>Username:</strong> {user.displayName}
 //                         </Typography>
 //                         <Button variant="contained" color="primary">
 //                             Update Account Info
@@ -117,10 +139,10 @@ export default AccountInfo;
 //                         <Button
 //                             variant="contained"
 //                             color="secondary"
-//                             onClick={handleLogout}
+//                             onClick={handleDelete}
 //                             style={{marginLeft: '10px'}}
 //                         >
-//                             Logout
+//                             Delete account
 //                         </Button>
 //                     </>
 //                 ) : (
@@ -130,7 +152,7 @@ export default AccountInfo;
 //                 )}
 //             </Paper>
 //         </ContentContainer>
-//     )
-// }
+//     );
+// };
 //
 // export default AccountInfo;

@@ -10,6 +10,7 @@ import Footer from "./components/common/Footer";
 import { AuthProvider } from './contexts/AuthContext';
 import AccountInfo from "./components/user/AccountInfo";
 import { useAuth } from './contexts/AuthContext';
+import PrivateRoute from './components/common/PrivateRoute'
 
 const App = () => {
     const { isAuthtenticated } = useAuth();
@@ -24,8 +25,10 @@ const App = () => {
                             <Route path="/" element={<Home />} />
                             <Route path="/sign-up" element={<SignUp />} />
                             <Route path="/login" element={<Login />} />
-                            <Route path="/dashboard/*" element={<Dashboard />} />
-                            <Route path="/dashboard/account" element={<AccountInfo />} />
+                            <Route path="/dashboard" element={<PrivateRoute />}>
+                                <Route path="" element={<Dashboard />} />
+                                <Route path="account" element={<AccountInfo />} />
+                            </Route>
                         </Routes>
                     </div>
                     <Footer />

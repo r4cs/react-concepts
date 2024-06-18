@@ -15,8 +15,7 @@ const MainContent = () => {
                 Dashboard Overview
             </Typography>
             <Paper elevation={3} style={{ padding: '20px', marginBottom: '20px' }}>
-                {/* Aqui irão os gráficos, tabelas e estatísticas */}
-                Placeholder para conteúdo do Dashboard.
+                Conteúdo do Dashboard.
             </Paper>
             <Outlet />
         </ContentContainer>

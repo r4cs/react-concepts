@@ -8,9 +8,20 @@ const Sidebar = () => {
         <div style={{ width: '240px' }}>
             <Drawer variant="permanent">
                 <List>
-                    <ListItem button component={RouterLink} to="/dashboard/account">
+
+                    <ListItem button component={RouterLink} to="/dashboard">
+                        <ListItemText primary="Dashboard" />
+                    </ListItem>
+
+                    {/* Mantenha o link para My Account Info sem um destino específico */}
+                    {/*<ListItem button component={RouterLink} to="/dashboard/account">*/}
+                    {/*    <ListItemText primary="My Account Info" />*/}
+                    {/*</ListItem>*/}
+
+                    <ListItem button onClick={() => setView('account')}>
                         <ListItemText primary="My Account Info" />
                     </ListItem>
+
                 </List>
             </Drawer>
         </div>
