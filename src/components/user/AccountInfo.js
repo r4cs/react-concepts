@@ -1,158 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import { Typography, Button, Paper, TextField } from '@mui/material';
-import styled from 'styled-components';
-import { useAuth } from '../../contexts/AuthContext';
-import {deleteUserAccount, updateUserData} from "../../services/Auth";
-// import { useNavigate } from 'react-router-dom';
 
-const ContentContainer = styled.div`
-    padding: 20px;
-`;
+import React, { useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
+import { TextField, Button, Box, Typography } from '@mui/material';
 
 const AccountInfo = () => {
-    const { currentUser } = useAuth();
-    const [user, setUser] = useState(null);
-    const [email, setEmail] = useState('');
-    const [displayName, setDisplayName] = useState('');
-    // const navigate = useNavigate();
+    const { currentUser, updateUserProfile } = useAuth();
+    const [name, setName] = useState(currentUser.displayName || '');
+    const [email, setEmail] = useState(currentUser.email || '');
 
-    useEffect(() => {
-        if (currentUser) {
-            setUser(currentUser);
-            setEmail(currentUser.email);
-            setDisplayName(currentUser.displayName);
-            console.log("AccountInfo useEffect, currentUser: ", currentUser)
-        }
-    }, [currentUser]);
-
-    const handleUpdate = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         try {
-            await updateUserData( { email, displayName } );
-            console.log('User updated successfully');
+            await updateUserProfile({ displayName: name, email });
+            alert('Profile updated successfully');
         } catch (error) {
-            console.error('Error updating user:', error.message);
-        }
-    };
-
-    const handleDelete = async () => {
-        try {
-            await deleteUserAccount();
-            console.log('User deleted successfully');
-            // navigate('/');
-        } catch (error) {
-            console.error('Error deleting user:', error.message);
+            alert('Failed to update profile: ' + error.message);
         }
     };
 
     return (
-        <ContentContainer>
-            <Typography variant="h5" gutterBottom>
-                My Account Info
-            </Typography>
-            <Paper elevation={3} style={{ padding: '20px', marginBottom: '20px' }}>
-                {user ? (
-                    <>
+        <Box sx={{ padding: 3, display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ width: '100%', maxWidth: '400px' }}>
+                <Typography variant="h5" gutterBottom align="center">
+                    Account Information
+                </Typography>
+                <form onSubmit={handleSubmit}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        <TextField
+                            label="Name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            variant="outlined"
+                            size="medium"
+                            fullWidth
+                        />
                         <TextField
                             label="Email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            variant="outlined"
+                            size="medium"
                             fullWidth
-                            margin="normal"
                         />
-                        <TextField
-                            label="Username"
-                            value={displayName}
-                            onChange={(e) => setDisplayName(e.target.value)}
-                            fullWidth
-                            margin="normal"
-                        />
-                        <Button variant="contained" color="primary" onClick={handleUpdate}>
-                            Update Account Info
+                        <Button type="submit" variant="contained" color="primary">
+                            Update Profile
                         </Button>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={handleDelete}
-                            style={{ marginLeft: '10px' }}
-                        >
-                            Delete Account
-                        </Button>
-                    </>
-                ) : (
-                    <Typography variant="body1" gutterBottom>
-                        Loading...
-                    </Typography>
-                )}
-            </Paper>
-        </ContentContainer>
+                    </Box>
+                </form>
+            </Box>
+        </Box>
     );
 };
 
 export default AccountInfo;
-
-
-// import React, { useEffect, useState } from 'react';
-// import { Typography, Button, Paper } from '@mui/material';
-// import styled from 'styled-components';
-// import { useAuth } from '../../contexts/AuthContext';
-// import {deleteUserAccount} from "../../services/Auth";
-//
-// const ContentContainer = styled.div`
-//     padding: 20px;
-// `;
-//
-// const AccountInfo = () => {
-//     const { currentUser, logout } = useAuth();
-//     const [user, setUser] = useState(null);
-//
-//     useEffect(() => {
-//         setUser(currentUser);
-//         console.log('AccountInfo useEffect, currentUser:', currentUser);
-//     }, [currentUser]);
-//
-//     const handleDelete = async () => {
-//         try {
-//             await deleteUserAccount();
-//             console.log('Usuário deletado!');
-//         } catch (error) {
-//             console.error('Erro ao fazer logout:', error.message);
-//         }
-//     };
-//
-//     return (
-//         <ContentContainer>
-//             <Typography variant="h5" gutterBottom>
-//                 My Account Info
-//             </Typography>
-//             <Paper elevation={3} style={{padding: '20px', marginBottom: '20px'}}>
-//                 {user ? (
-//                     <>
-//                         <Typography variant="body1" gutterBottom>
-//                             <strong>Email:</strong> {user.email}
-//                         </Typography>
-//                         <Typography variant="body1" gutterBottom>
-//                             <strong>Username:</strong> {user.displayName}
-//                         </Typography>
-//                         <Button variant="contained" color="primary">
-//                             Update Account Info
-//                         </Button>
-//                         <Button
-//                             variant="contained"
-//                             color="secondary"
-//                             onClick={handleDelete}
-//                             style={{marginLeft: '10px'}}
-//                         >
-//                             Delete account
-//                         </Button>
-//                     </>
-//                 ) : (
-//                     <Typography variant="body1" gutterBottom>
-//                         Loading...
-//                     </Typography>
-//                 )}
-//             </Paper>
-//         </ContentContainer>
-//     );
-// };
-//
-// export default AccountInfo;

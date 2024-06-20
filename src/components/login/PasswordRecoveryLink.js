@@ -1,7 +1,6 @@
 // components/login/PasswordRecoveryLink.js
 import React, { useState } from 'react';
 import { Link as RouterLink } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import PasswordRecoveryForm from './PasswordRecoveryForm';
 
 const PasswordRecoveryLink = () => {

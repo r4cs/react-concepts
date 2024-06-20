@@ -7,9 +7,8 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const Login = () => {
     const navigate = useNavigate();
-    const { isAuthenticated } = useAuth(); // Obtém a função isAuthenticated do contexto de autenticação
+    const { isAuthenticated } = useAuth();
 
-    // Verificando se o usuário está autenticado ao acessar a página de login
     useEffect(() => {
         if (isAuthenticated()) {
             navigate('/dashboard');

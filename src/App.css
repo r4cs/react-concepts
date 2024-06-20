@@ -18,4 +18,5 @@ html, body, #root {
 
 .App-header {
     flex: 1;
+    z-index:3000;
 }
