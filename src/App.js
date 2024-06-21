@@ -10,28 +10,31 @@ import Footer from "./components/common/Footer";
 import { AuthProvider } from './contexts/AuthContext';
 import AccountInfo from "./components/user/AccountInfo";
 import PrivateRoute from './components/common/PrivateRoute'
+import { ThemeProvider } from './contexts/ThemeContext'
 
 const App = () => {
 
     return (
         <AuthProvider>
-            <Router>
-                <div className="App">
-                    <NavBar />
-                    <div className="content">
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/sign-up" element={<SignUp />} />
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/dashboard" element={<PrivateRoute />}>
-                                <Route path="" element={<Dashboard />} />
-                                <Route path="account" element={<AccountInfo />} />
-                            </Route>
-                        </Routes>
+            <ThemeProvider>
+                <Router>
+                    <div className="App">
+                        <NavBar />
+                            <div className="content">
+                                <Routes>
+                                    <Route path="/" element={<Home />} />
+                                    <Route path="/sign-up" element={<SignUp />} />
+                                    <Route path="/login" element={<Login />} />
+                                    <Route path="/dashboard" element={<PrivateRoute />}>
+                                        <Route path="" element={<Dashboard />} />
+                                        <Route path="account" element={<AccountInfo />} />
+                                    </Route>
+                                </Routes>
+                            </div>
+                        <Footer />
                     </div>
-                    <Footer />
-                </div>
-            </Router>
+                </Router>
+            </ThemeProvider>
         </AuthProvider>
     );
 };

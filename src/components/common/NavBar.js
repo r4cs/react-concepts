@@ -1,8 +1,15 @@
-import React from 'react';
-import { AppBar, Toolbar, Button, Container, Box } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import React, {useContext} from 'react';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { ThemeContext } from '../../contexts/ThemeContext';
+import {useNavigate, Link as RouterLink} from "react-router-dom";
+import styled from "styled-components";
+import {useAuth} from "../../contexts/AuthContext";
+import {Box, Container, Link, Tooltip, Button} from "@mui/material";
+// import Button from "./Button";
 
 const Logo = styled('img')({
     width: '50px',
@@ -12,6 +19,7 @@ const Logo = styled('img')({
 const NavBar = () => {
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
+    const { mode, toggleTheme } = useContext(ThemeContext);
 
     console.log('NavBar render, currentUser:', currentUser);
 
@@ -26,22 +34,28 @@ const NavBar = () => {
     };
 
     return (
-        <AppBar position="static" sx={{ backgroundColor: '#1976d2', px: 2, zIndex:3000 }}>
+        <AppBar position="static" sx={{ px: 2, zIndex:3000 }}>
             <Container>
                 <Toolbar disableGutters>
-                    <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <Link component={RouterLink} to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    {/*<Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>*/}
                         <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
                             <Logo src="/images/logo.jpeg" alt="Logo" />
                         </Box>
                     </Link>
                     <Box sx={{ flexGrow: 1 }} />
-                    <Box sx={{ ml: 2 }}>
+                    <Tooltip title="Switch theme">
+                        <IconButton color="inherit" onClick={toggleTheme} >
+                            {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+                        </IconButton>
+                    </Tooltip>
+                    <Box sx={{ ml: 3 }}>
                         {currentUser ? (
                             <Button color="inherit" onClick={handleLogout}>
                                 Logout
                             </Button>
                         ) : (
-                            <Button color="inherit" component={Link} to="/login">
+                            <Button color="inherit" component={RouterLink} to="/login">
                                 Login
                             </Button>
                         )}
