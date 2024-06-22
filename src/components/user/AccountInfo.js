@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { Button, Box, Typography } from '@mui/material';
-import { CustomTextField } from '../../assets/styles/muiStyles'; // Importando os estilos customizados
+import { CustomTextField } from '../../assets/styles/muiStyles';
 
 const AccountInfo = () => {
     const { currentUser, updateUserProfile } = useAuth();
