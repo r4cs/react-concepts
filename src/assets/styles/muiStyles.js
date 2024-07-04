@@ -16,6 +16,6 @@ export const CustomTextField = styled(TextField)(({ theme }) => ({
         },
     },
     '& input': {
-        color: theme.palette.mode === 'dark' ? '#fff' : '#000',
+        color: theme.palette.mode = '#555',
     },
 }));

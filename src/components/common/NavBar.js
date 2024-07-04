@@ -55,9 +55,14 @@ const NavBar = () => {
                                 Logout
                             </Button>
                         ) : (
-                            <Button color="inherit" component={RouterLink} to="/login">
-                                Login
-                            </Button>
+                            <>
+                                <Button color="inherit" component={RouterLink} to="/login">
+                                    Login
+                                </Button>
+                                <Button color="inherit" component={RouterLink} to="/sign-up">
+                                    Sign up
+                                </Button>
+                            </>
                         )}
                     </Box>
                 </Toolbar>
